@@ -68,20 +68,21 @@ export default function SignInScreen({ setToken }) {
       <View style={styles.allInput}>
         <TextInput
           placeholder="Email"
-          style={styles.input}
+          style={[styles.input, styles.borderRed]}
           value={email}
           onChangeText={(text) => {
+            setErrorMessage("");
             setEmail(text);
           }}
         />
 
-        <View style={[styles.password, styles.flexRow]}>
+        <View style={[styles.password, styles.flexRow, styles.borderRed]}>
           <TextInput
             placeholder="Password"
             secureTextEntry={!showPassword}
-            style={styles.input}
             value={password}
             onChangeText={(text) => {
+              setErrorMessage("");
               setPassword(text);
             }}
           />
@@ -95,15 +96,15 @@ export default function SignInScreen({ setToken }) {
         </View>
 
         <Text style={styles.error}>{errorMessage ? errorMessage : ""}</Text>
-        <View style={styles.submit}>
-          <Button
-            title="Sign in"
-            color={Platform.OS === "android" ? "" : "gray"}
-            onPress={async () => {
-              Submit();
-            }}
-          />
-        </View>
+
+        <TouchableOpacity
+          style={[styles.submit, styles.borderRed]}
+          onPress={async () => {
+            Submit();
+          }}
+        >
+          <Text style={[styles.textGray, styles.textSize20]}>Sign up</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() => {
@@ -134,6 +135,13 @@ const styles = StyleSheet.create({
   flexRow: {
     flexDirection: "row",
   },
+  textSize20: {
+    fontSize: 20,
+  },
+
+  borderRed: {
+    borderColor: "#EB5A62",
+  },
 
   logo: {
     width: 100,
@@ -141,18 +149,16 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
 
-  input: {
-    borderBottomWidth: 1,
-    borderBottomColor: "red",
-    marginBottom: 20,
-    // width: 300,
-    paddingBottom: 8,
-    width: "75%",
-  },
   allInput: {
     width: "100%",
     alignItems: "center",
     marginTop: 50,
+  },
+  input: {
+    borderBottomWidth: 1,
+    marginBottom: 20,
+    padding: 5,
+    width: "75%",
   },
 
   error: {
@@ -160,17 +166,19 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   submit: {
-    borderColor: "red",
     borderWidth: 3,
-    paddingVertical: 8,
-    paddingHorizontal: 50,
+    paddingVertical: 15,
+    paddingHorizontal: 60,
     borderRadius: 30,
     marginTop: 10,
     marginBottom: 20,
   },
   password: {
-    width: "85%",
-    justifyContent: "center",
+    width: "75%",
+    justifyContent: "space-between",
+    padding: 5,
     gap: 15,
+    borderBottomWidth: 1,
+    marginBottom: 20,
   },
 });

@@ -32,11 +32,9 @@ export default function SignUpScreen({ setToken }) {
 
   const Submit = () => {
     const fetchData = async () => {
-      try {
-        setErrorMessage("");
-        if (password !== confirmPassword) {
-          setErrorMessage("The password in fields must be the same");
-        } else {
+      if (password === confirmPassword) {
+        try {
+          setErrorMessage("");
           const response = await axios.post(
             "https://lereacteur-bootcamp-api.herokuapp.com/api/airbnb/user/sign_up",
             {
@@ -50,20 +48,23 @@ export default function SignUpScreen({ setToken }) {
           alert("Compte créer avec succès");
           const userToken = response.data.token;
           setToken(userToken);
+        } catch (error) {
+          console.log("ERROR SIGNUP ==>", error.response.data);
+          if (error.response.data.error === "Missing parameter(s)") {
+            setErrorMessage("Please fill all fields.");
+          } else if (
+            error.response.data.error === "This email already has an account."
+          ) {
+            setErrorMessage("This email already has an account.");
+          } else if (
+            error.response.data.error ===
+            "This username already has an account."
+          ) {
+            setErrorMessage("This username is already used.");
+          }
         }
-      } catch (error) {
-        console.log("ERROR ==>", error.response.data);
-        if (error.response.data.error === "Missing parameter(s)") {
-          setErrorMessage("Please fill all fields.");
-        } else if (
-          error.response.data.error === "This email already has an account."
-        ) {
-          setErrorMessage("This email already has an account.");
-        } else if (
-          error.response.data.error === "This username already has an account."
-        ) {
-          setErrorMessage("This username is already used.");
-        }
+      } else {
+        setErrorMessage("The password in fields must be the same");
       }
     };
     fetchData();
@@ -82,37 +83,42 @@ export default function SignUpScreen({ setToken }) {
         <TextInput
           placeholder="Email"
           value={email}
-          style={styles.input}
+          style={[styles.input, styles.borderRed]}
           onChangeText={(text) => {
             setEmail(text);
+            setErrorMessage("");
           }}
         />
 
         <TextInput
           placeholder="Username"
-          style={styles.input}
+          style={[styles.input, styles.borderRed]}
           value={username}
           onChangeText={(text) => {
             setUsername(text);
+            setErrorMessage("");
           }}
         />
 
         <TextInput
           placeholder="Describe yourself"
-          style={styles.input}
+          multiline={true}
+          textAlignVertical="top"
+          style={[styles.input, styles.inputDescription, styles.borderRed]}
           value={description}
           onChangeText={(text) => {
             setDescription(text);
+            setErrorMessage("");
           }}
         />
 
-        <View style={[styles.password, styles.flexRow]}>
+        <View style={[styles.password, styles.flexRow, styles.borderRed]}>
           <TextInput
             placeholder="Password"
             secureTextEntry={!showPassword}
-            style={styles.input}
             value={password}
             onChangeText={(text) => {
+              setErrorMessage("");
               setPassword(text);
             }}
           />
@@ -125,13 +131,13 @@ export default function SignUpScreen({ setToken }) {
           </TouchableOpacity>
         </View>
 
-        <View style={[styles.password, styles.flexRow]}>
+        <View style={[styles.password, styles.flexRow, styles.borderRed]}>
           <TextInput
             placeholder="Confirm password"
             secureTextEntry={!showConfirmedPassword}
-            style={styles.input}
             value={confirmPassword}
             onChangeText={(text) => {
+              setErrorMessage("");
               setConfirmPassword(text);
             }}
           />
@@ -145,15 +151,15 @@ export default function SignUpScreen({ setToken }) {
         </View>
 
         <Text style={styles.error}>{errorMessage ? errorMessage : ""}</Text>
-        <View style={styles.submit}>
-          <Button
-            title="Sign up"
-            color={Platform.OS === "android" ? "" : "gray"}
-            onPress={async () => {
-              Submit();
-            }}
-          />
-        </View>
+
+        <TouchableOpacity
+          style={[styles.submit, styles.borderRed]}
+          onPress={async () => {
+            Submit();
+          }}
+        >
+          <Text style={[styles.textGray, styles.textSize20]}>Sign up</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() => {
@@ -189,6 +195,13 @@ const styles = StyleSheet.create({
   textBold: {
     fontWeight: "bold",
   },
+  textSize20: {
+    fontSize: 20,
+  },
+
+  borderRed: {
+    borderColor: "#EB5A62",
+  },
   flexRow: {
     flexDirection: "row",
   },
@@ -206,11 +219,13 @@ const styles = StyleSheet.create({
   },
   input: {
     borderBottomWidth: 1,
-    borderBottomColor: "red",
     marginBottom: 20,
-    // width: 300,
-    paddingBottom: 8,
+    padding: 5,
     width: "75%",
+  },
+  inputDescription: {
+    borderWidth: 1,
+    height: 100,
   },
 
   error: {
@@ -218,17 +233,19 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   submit: {
-    borderColor: "red",
     borderWidth: 3,
-    paddingVertical: 8,
-    paddingHorizontal: 50,
+    paddingVertical: 15,
+    paddingHorizontal: 60,
     borderRadius: 30,
     marginTop: 10,
     marginBottom: 20,
   },
   password: {
-    width: "85%",
-    justifyContent: "center",
+    width: "75%",
+    justifyContent: "space-between",
+    padding: 5,
     gap: 15,
+    borderBottomWidth: 1,
+    marginBottom: 20,
   },
 });
