@@ -4,7 +4,10 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
+
+// Import de mes écrans
 import HomeScreen from "./containers/HomeScreen";
+import OfferScreen from "./containers/OfferSreen";
 import ProfileScreen from "./containers/ProfileScreen";
 import SignInScreen from "./containers/SignInScreen";
 import SignUpScreen from "./containers/SignUpScreen";
@@ -73,6 +76,10 @@ export default function App() {
                   tabBarInactiveTintColor: "gray",
                 }}
               >
+                {/* -------------------------------- */}
+                {/* -- PREMIER ONGLET (HOME) ------- */}
+                {/* -------------------------------- */}
+
                 <Tab.Screen
                   name="TabHome"
                   options={{
@@ -84,15 +91,22 @@ export default function App() {
                 >
                   {() => (
                     <Stack.Navigator>
+                      {/* -- Premier écran du premier onglet */}
                       <Stack.Screen
                         name="Home"
                         options={{
                           title: "My App",
-                          headerStyle: { backgroundColor: "red" },
-                          headerTitleStyle: { color: "white" },
+                          // headerStyle: { backgroundColor: "red" },
+                          // headerTitleStyle: { color: "white" },
                         }}
                       >
                         {() => <HomeScreen />}
+                      </Stack.Screen>
+
+                      <Stack.Screen name="Offer">
+                        {() => {
+                          <OfferScreen />;
+                        }}
                       </Stack.Screen>
 
                       <Stack.Screen
@@ -106,6 +120,11 @@ export default function App() {
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
+
+                {/* -------------------------------- */}
+                {/* -- DEUXIÈME ONGLET (SETTINGS) -- */}
+                {/* -------------------------------- */}
+
                 <Tab.Screen
                   name="TabSettings"
                   options={{
