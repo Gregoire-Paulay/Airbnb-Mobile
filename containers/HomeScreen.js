@@ -2,23 +2,24 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Ionicons } from "@expo/vector-icons";
 import {
-  Button,
   Text,
   View,
   StyleSheet,
   FlatList,
-  ScrollView,
   Image,
   ActivityIndicator,
   TouchableOpacity,
 } from "react-native";
 
 import { useNavigation } from "@react-navigation/core";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function HomeScreen() {
   const navigation = useNavigation();
-  const [offer, setOffer] = useState([]);
+
+  // State pour gérer l'affichage de ma page
   const [isLoading, setIsLoading] = useState(true);
+  const [roomsList, setRoomsList] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,7 +28,7 @@ export default function HomeScreen() {
           "https://lereacteur-bootcamp-api.herokuapp.com/api/airbnb/rooms"
         );
         // console.log(response.data);
-        setOffer(response.data);
+        setRoomsList(response.data);
         setIsLoading(false);
       } catch (error) {
         console.log(error.response);
@@ -36,22 +37,44 @@ export default function HomeScreen() {
     fetchData();
   }, []);
 
+  const displayRating = (rate) => {
+    const tab = [];
+
+    for (let i = 1; i <= 5; i++) {
+      // console.log(i);
+      if (i <= rate) {
+        tab.push(<Ionicons name="star" size={20} color="orange" key={i} />);
+      } else {
+        tab.push(<Ionicons name="star" size={20} color="gray" key={i} />);
+      }
+    }
+
+    // console.log(tab);
+    return tab;
+  };
+
   return isLoading ? (
     <ActivityIndicator size="large" color="#EB5A62" />
   ) : (
     <View>
       <View>
         <FlatList
-          data={offer}
+          data={roomsList}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => {
             // console.log("RENDER", item);
-            // console.log("ID", item._id);
-            // console.log("ACCOUNT", item.user.account.photo.url);
+
             return (
               <TouchableOpacity
                 onPress={async () => {
-                  navigation.navigate("Offer");
+                  // console.log(item._id);
+                  await AsyncStorage.setItem("id", item._id);
+                  const id = await AsyncStorage.getItem("id");
+                  // console.log("ID", id);
+
+                  navigation.navigate("Room", {
+                    id: id,
+                  });
                 }}
               >
                 <View style={styles.allOffer}>
@@ -68,25 +91,9 @@ export default function HomeScreen() {
                       <Text style={styles.title} numberOfLines={1}>
                         {item.title}
                       </Text>
-                      {item.ratingValue === 5 ? (
-                        <View style={[styles.rating, styles.flexRow]}>
-                          <Ionicons name="star" size={20} color="orange" />
-                          <Ionicons name="star" size={20} color="orange" />
-                          <Ionicons name="star" size={20} color="orange" />
-                          <Ionicons name="star" size={20} color="orange" />
-                          <Ionicons name="star" size={20} color="orange" />
-                          <Text>{item.reviews} reviews</Text>
-                        </View>
-                      ) : (
-                        <View style={[styles.rating, styles.flexRow]}>
-                          <Ionicons name="star" size={20} color="orange" />
-                          <Ionicons name="star" size={20} color="orange" />
-                          <Ionicons name="star" size={20} color="orange" />
-                          <Ionicons name="star" size={20} color="orange" />
-                          <Ionicons name="star" size={20} color="gray" />
-                          <Text>{item.reviews} reviews</Text>
-                        </View>
-                      )}
+                      <View style={[styles.rating, styles.flexRow]}>
+                        {displayRating(item.ratingValue)}
+                      </View>
                     </View>
                     <Image
                       source={{ uri: item.user.account.photo.url }}

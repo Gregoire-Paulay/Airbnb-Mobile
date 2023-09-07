@@ -7,12 +7,15 @@ import { Ionicons } from "@expo/vector-icons";
 
 // Import de mes écrans
 import HomeScreen from "./containers/HomeScreen";
-import OfferScreen from "./containers/OfferSreen";
+import RoomScreen from "./containers/RoomSreen";
 import ProfileScreen from "./containers/ProfileScreen";
 import SignInScreen from "./containers/SignInScreen";
 import SignUpScreen from "./containers/SignUpScreen";
 import SettingsScreen from "./containers/SettingsScreen";
 import SplashScreen from "./containers/SplashScreen";
+
+// Import de mes Components
+import Logo from "./components/Logo";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -95,27 +98,20 @@ export default function App() {
                       <Stack.Screen
                         name="Home"
                         options={{
-                          title: "My App",
-                          // headerStyle: { backgroundColor: "red" },
-                          // headerTitleStyle: { color: "white" },
+                          headerTitle: () => <Logo />,
                         }}
                       >
                         {() => <HomeScreen />}
                       </Stack.Screen>
 
-                      <Stack.Screen name="Offer">
-                        {() => {
-                          <OfferScreen />;
-                        }}
-                      </Stack.Screen>
-
+                      {/* <Stack.Screen name="Room" component={RoomScreen} /> */}
                       <Stack.Screen
-                        name="Profile"
+                        name="Room"
                         options={{
-                          title: "User Profile",
+                          headerTitle: () => <Logo />,
                         }}
                       >
-                        {() => <ProfileScreen />}
+                        {() => <RoomScreen />}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}
