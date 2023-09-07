@@ -8,11 +8,13 @@ import { Ionicons } from "@expo/vector-icons";
 // Import de mes écrans
 import HomeScreen from "./containers/HomeScreen";
 import RoomScreen from "./containers/RoomSreen";
-import ProfileScreen from "./containers/ProfileScreen";
 import SignInScreen from "./containers/SignInScreen";
 import SignUpScreen from "./containers/SignUpScreen";
 import SettingsScreen from "./containers/SettingsScreen";
-import SplashScreen from "./containers/SplashScreen";
+import AroundMeScreen from "./containers/AroundMeScreen";
+
+// import ProfileScreen from "./containers/ProfileScreen";
+// import SplashScreen from "./containers/SplashScreen";
 
 // Import de mes Components
 import Logo from "./components/Logo";
@@ -105,7 +107,6 @@ export default function App() {
                         {() => <HomeScreen />}
                       </Stack.Screen>
 
-                      {/* <Stack.Screen name="Room" component={RoomScreen} /> */}
                       <Stack.Screen
                         name="Room"
                         options={{
@@ -120,7 +121,39 @@ export default function App() {
                 </Tab.Screen>
 
                 {/* -------------------------------- */}
-                {/* -- DEUXIÈME ONGLET (SETTINGS) -- */}
+                {/* - DEUXIEME ONGLET (AROUND ME) -- */}
+                {/* -------------------------------- */}
+
+                <Tab.Screen
+                  name="AroundMe"
+                  options={{
+                    tabBarLabel: "Around me",
+                    tabBarIcon: ({ color, size }) => (
+                      <Ionicons
+                        name={"ios-location-outline"}
+                        size={size}
+                        color={color}
+                      />
+                    ),
+                  }}
+                >
+                  {() => (
+                    <Stack.Navigator>
+                      <Stack.Screen
+                        name="Location"
+                        options={{
+                          headerTitle: () => <Logo />,
+                          headerTitleAlign: "center",
+                        }}
+                      >
+                        {() => <AroundMeScreen />}
+                      </Stack.Screen>
+                    </Stack.Navigator>
+                  )}
+                </Tab.Screen>
+
+                {/* -------------------------------- */}
+                {/* - TROISIEME ONGLET (SETTINGS) -- */}
                 {/* -------------------------------- */}
 
                 <Tab.Screen
