@@ -59,6 +59,7 @@ export default function HomeScreen() {
     <View>
       <View>
         <FlatList
+          style={styles.container}
           data={roomsList}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => {
@@ -93,6 +94,9 @@ export default function HomeScreen() {
                       </Text>
                       <View style={[styles.rating, styles.flexRow]}>
                         {displayRating(item.ratingValue)}
+                        <Text style={styles.textGray}>
+                          {item.reviews} reviews
+                        </Text>
                       </View>
                     </View>
                     <Image
@@ -123,25 +127,27 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    paddingTop: 8,
+  },
   flexRow: {
     flexDirection: "row",
   },
   title: {
     fontSize: 30,
-    // borderWidth: 3,
     width: 230,
+  },
+  textGray: {
+    color: "gray",
   },
 
   allOffer: {
     width: "100%",
     alignItems: "center",
-    // borderWidth: 3,
   },
   picPrice: {
     width: "90%",
     alignItems: "center",
-    // borderWidth: 3,
-    // borderColor: "red",
     position: "relative",
   },
   price: {
@@ -169,8 +175,6 @@ const styles = StyleSheet.create({
   },
 
   offerInfo: {
-    // borderColor: "blue",
-    // borderWidth: 3,
     width: "90%",
     justifyContent: "space-between",
     alignItems: "center",
@@ -179,6 +183,7 @@ const styles = StyleSheet.create({
   rating: {
     gap: 7,
     alignItems: "center",
+    marginTop: 10,
   },
   avatar: {
     height: 80,

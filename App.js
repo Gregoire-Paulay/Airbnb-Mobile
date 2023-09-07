@@ -99,6 +99,7 @@ export default function App() {
                         name="Home"
                         options={{
                           headerTitle: () => <Logo />,
+                          headerTitleAlign: "center",
                         }}
                       >
                         {() => <HomeScreen />}
@@ -109,6 +110,7 @@ export default function App() {
                         name="Room"
                         options={{
                           headerTitle: () => <Logo />,
+                          headerTitleAlign: "center",
                         }}
                       >
                         {() => <RoomScreen />}
