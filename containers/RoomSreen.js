@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRoute } from "@react-navigation/native";
 import MapView, { Marker } from "react-native-maps";
-import { Ionicons } from "@expo/vector-icons";
-
 import {
   Text,
   View,
@@ -13,6 +11,9 @@ import {
   ScrollView,
   Image,
 } from "react-native";
+
+// import de fonction
+import displayRating from "../function/displayRating";
 
 const RoomScreen = () => {
   const { params } = useRoute();
@@ -37,23 +38,7 @@ const RoomScreen = () => {
     fetchData();
   }, []);
 
-  console.log("ROOM INFO ===>", roomDetails);
-
-  const displayRating = (rate) => {
-    const tab = [];
-
-    for (let i = 1; i <= 5; i++) {
-      // console.log(i);
-      if (i <= rate) {
-        tab.push(<Ionicons name="star" size={20} color="orange" key={i} />);
-      } else {
-        tab.push(<Ionicons name="star" size={20} color="gray" key={i} />);
-      }
-    }
-
-    // console.log(tab);
-    return tab;
-  };
+  // console.log("ROOM INFO ===>", roomDetails);
 
   return isLoading ? (
     <ActivityIndicator size="large" color="#EB5A62" />

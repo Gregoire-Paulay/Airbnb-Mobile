@@ -6,7 +6,7 @@ import MapView, { Marker } from "react-native-maps";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 {
 }
-const AroundMeScreen = () => {
+const AroundMeScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [finishLoading, setFinishLoading] = useState(false);
 
@@ -41,7 +41,7 @@ const AroundMeScreen = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://lereacteur-bootcamp-api.herokuapp.com/api/airbnb/rooms/around?latitude=${48.850869}&longitude=${2.378946}`
+          `https://lereacteur-bootcamp-api.herokuapp.com/api/airbnb/rooms/around?latitude=${48.866667}&longitude=${2.333333}`
         );
         // console.log("REPONSE AXIOS ===>", response.data);
         setRoomLocation(response.data);
@@ -64,16 +64,16 @@ const AroundMeScreen = () => {
         style={styles.map}
         initialRegion={{
           // Map centré sur la position de l'utilisateur
-          latitude: 48.850869,
-          longitude: 2.378946,
+          latitude: 48.866667,
+          longitude: 2.333333,
           //  Détermine le zoom de la map
           latitudeDelta: 0.2,
           longitudeDelta: 0.2,
         }}
-        showsUserLocation={true}
+        showsUserLocation
       >
         {roomLocation.map((coord) => {
-          console.log(coord);
+          // console.log(coord);
           return (
             <Marker
               key={coord._id}
@@ -83,7 +83,12 @@ const AroundMeScreen = () => {
               }}
               title={coord.title}
               description={coord.description}
-            ></Marker>
+              onPress={() => {
+                navigation.navigate("RoomMap", {
+                  id: coord._id,
+                });
+              }}
+            />
           );
         })}
       </MapView>

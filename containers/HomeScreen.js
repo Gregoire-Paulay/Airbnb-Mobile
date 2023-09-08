@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Ionicons } from "@expo/vector-icons";
 import {
   Text,
   View,
@@ -11,12 +10,10 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import { useNavigation } from "@react-navigation/core";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+// import de fonction
+import displayRating from "../function/displayRating";
 
-export default function HomeScreen() {
-  const navigation = useNavigation();
-
+export default function HomeScreen({ navigation }) {
   // State pour gérer l'affichage de ma page
   const [isLoading, setIsLoading] = useState(true);
   const [roomsList, setRoomsList] = useState([]);
@@ -37,22 +34,6 @@ export default function HomeScreen() {
     fetchData();
   }, []);
 
-  const displayRating = (rate) => {
-    const tab = [];
-
-    for (let i = 1; i <= 5; i++) {
-      // console.log(i);
-      if (i <= rate) {
-        tab.push(<Ionicons name="star" size={20} color="orange" key={i} />);
-      } else {
-        tab.push(<Ionicons name="star" size={20} color="gray" key={i} />);
-      }
-    }
-
-    // console.log(tab);
-    return tab;
-  };
-
   return isLoading ? (
     <ActivityIndicator size="large" color="#EB5A62" />
   ) : (
@@ -69,12 +50,8 @@ export default function HomeScreen() {
               <TouchableOpacity
                 onPress={async () => {
                   // console.log(item._id);
-                  await AsyncStorage.setItem("id", item._id);
-                  const id = await AsyncStorage.getItem("id");
-                  // console.log("ID", id);
-
                   navigation.navigate("Room", {
-                    id: id,
+                    id: item._id,
                   });
                 }}
               >

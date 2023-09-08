@@ -99,23 +99,21 @@ export default function App() {
                       {/* -- Premier écran du premier onglet */}
                       <Stack.Screen
                         name="Home"
+                        component={HomeScreen}
                         options={{
                           headerTitle: () => <Logo />,
                           headerTitleAlign: "center",
                         }}
-                      >
-                        {() => <HomeScreen />}
-                      </Stack.Screen>
+                      />
 
                       <Stack.Screen
                         name="Room"
+                        component={RoomScreen}
                         options={{
                           headerTitle: () => <Logo />,
                           headerTitleAlign: "center",
                         }}
-                      >
-                        {() => <RoomScreen />}
-                      </Stack.Screen>
+                      />
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
@@ -141,13 +139,20 @@ export default function App() {
                     <Stack.Navigator>
                       <Stack.Screen
                         name="Location"
+                        component={AroundMeScreen}
                         options={{
                           headerTitle: () => <Logo />,
                           headerTitleAlign: "center",
                         }}
-                      >
-                        {() => <AroundMeScreen />}
-                      </Stack.Screen>
+                      />
+                      <Stack.Screen
+                        name="RoomMap"
+                        component={RoomScreen}
+                        options={{
+                          headerTitle: () => <Logo />,
+                          headerTitleAlign: "center",
+                        }}
+                      />
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
