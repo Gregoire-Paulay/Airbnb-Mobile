@@ -2,18 +2,16 @@ import { useNavigation } from "@react-navigation/core";
 import axios from "axios";
 import { useState } from "react";
 import {
-  Button,
   Text,
   TextInput,
   View,
   TouchableOpacity,
   StyleSheet,
   Image,
-  ScrollView,
-  Platform,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function SignInScreen({ setToken }) {
   // console.log(Platform.OS);
@@ -41,6 +39,10 @@ export default function SignInScreen({ setToken }) {
 
         const userToken = response.data.token;
         // console.log(userToken);
+        const userId = response.data.id;
+        // console.log(userId);
+
+        await AsyncStorage.setItem("id", userId);
         setToken(userToken);
       } catch (error) {
         console.log("ERROR ==>", error.response.data);
@@ -103,7 +105,7 @@ export default function SignInScreen({ setToken }) {
             Submit();
           }}
         >
-          <Text style={[styles.textGray, styles.textSize20]}>Sign up</Text>
+          <Text style={[styles.textGray, styles.textSize20]}>Sign in</Text>
         </TouchableOpacity>
 
         <TouchableOpacity

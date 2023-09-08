@@ -179,10 +179,16 @@ export default function App() {
                       <Stack.Screen
                         name="Settings"
                         options={{
-                          title: "Settings",
+                          headerTitle: () => <Logo />,
+                          headerTitleAlign: "center",
                         }}
                       >
-                        {() => <SettingsScreen setToken={setToken} />}
+                        {() => (
+                          <SettingsScreen
+                            setToken={setToken}
+                            userToken={userToken}
+                          />
+                        )}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}
