@@ -3,6 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import * as ImagePicker from "expo-image-picker";
+import { FontAwesome } from "@expo/vector-icons";
 
 import {
   Button,
@@ -108,40 +109,6 @@ export default function SettingsScreen({ setToken, userToken }) {
     }
   };
 
-  const sendAvatar = async () => {
-    if (selectedPic) {
-      const tab = selectedPic.split(".");
-      // console.log(tab.at(-1));
-
-      const formData = new FormData();
-      formData.append("photo", {
-        uri: selectedPic,
-        name: `avatar.${tab.at(-1)}`,
-        type: `image/${tab.at(-1)}`,
-      });
-
-      try {
-        const response = await axios.put(
-          "https://lereacteur-bootcamp-api.herokuapp.com/api/airbnb/user/upload_picture",
-          formData,
-          {
-            headers: {
-              Authorization: `Bearer ${userToken}`,
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-        console.log("AVATAR EDIT ===>", response.data);
-        setUserAvatar(response.data.photo.url);
-        // console.log("AVATAR EDIT ===>", userAvatar);
-      } catch (error) {
-        console.log(error.response);
-      }
-    } else {
-      alert("Selectionner une image pour mettre à jour votre avatar");
-    }
-  };
-
   const editInfo = async () => {
     try {
       const { data } = await axios.put(
@@ -158,6 +125,36 @@ export default function SettingsScreen({ setToken, userToken }) {
         }
       );
       console.log("UPDATE ==>", data);
+
+      if (selectedPic) {
+        const tab = selectedPic.split(".");
+        // console.log(tab.at(-1));
+
+        const formData = new FormData();
+        formData.append("photo", {
+          uri: selectedPic,
+          name: `avatar.${tab.at(-1)}`,
+          type: `image/${tab.at(-1)}`,
+        });
+
+        try {
+          const response = await axios.put(
+            "https://lereacteur-bootcamp-api.herokuapp.com/api/airbnb/user/upload_picture",
+            formData,
+            {
+              headers: {
+                Authorization: `Bearer ${userToken}`,
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+          console.log("AVATAR EDIT ===>", response.data);
+          setUserAvatar(response.data.photo.url);
+          // console.log("AVATAR EDIT ===>", userAvatar);
+        } catch (error) {
+          console.log(error.response);
+        }
+      }
     } catch (error) {
       console.log(error.response);
     }
@@ -165,26 +162,31 @@ export default function SettingsScreen({ setToken, userToken }) {
 
   // console.log(userId);
   // console.log("AVATAR ===>", userAvatar);
+
   return !loadingFinished ? (
     <ActivityIndicator size="large" color="#EB5A62" />
   ) : (
     <KeyboardAwareScrollView contentContainerStyle={styles.container}>
-      <View style={styles.flexRow}>
+      <View style={[styles.flexRow, styles.avatarChange]}>
         {userAvatar === null ? (
-          <Image style={styles.avatar} source={userIcon} />
+          <Image style={[styles.avatar, styles.borderRed]} source={userIcon} />
         ) : (
-          <Image style={styles.avatar} source={{ uri: userAvatar }} />
+          <Image
+            style={[styles.avatar, styles.borderRed]}
+            source={{ uri: userAvatar }}
+          />
         )}
 
-        <View>
+        <View style={styles.media}>
           <TouchableOpacity onPress={getPermissionToOpenLibrary}>
-            <Text>Open Library</Text>
+            <FontAwesome name="photo" size={24} color="black" />
           </TouchableOpacity>
           <TouchableOpacity onPress={getPermissionToOpenCamera}>
-            <Text>Open Camera</Text>
+            <FontAwesome name="camera" size={24} color="black" />
           </TouchableOpacity>
         </View>
       </View>
+
       <View style={styles.allInput}>
         <TextInput
           value={email}
@@ -212,26 +214,31 @@ export default function SettingsScreen({ setToken, userToken }) {
       </View>
 
       <TouchableOpacity onPress={editInfo}>
-        <Text style={[styles.update, styles.borderRed, styles.textSize20]}>
+        <Text
+          style={[
+            styles.update,
+            styles.borderRed,
+            styles.textSize20,
+            styles.textGray,
+          ]}
+        >
           Update Profile
         </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={sendAvatar}>
-        <Text style={[styles.update, styles.borderRed, styles.textSize20]}>
-          Update Avatar
-        </Text>
-      </TouchableOpacity>
-
-      {selectedPic && (
+      {/* {selectedPic && (
         <Image source={{ uri: selectedPic }} style={styles.img} />
-      )}
-      <Button
-        title="Log Out"
+      )} */}
+      <TouchableOpacity
         onPress={() => {
           setToken(null);
         }}
-      />
+        style={[styles.logOut, styles.borderRed]}
+      >
+        <Text style={[styles.textSize20, styles.textGray, styles.textAlign]}>
+          Log Out
+        </Text>
+      </TouchableOpacity>
     </KeyboardAwareScrollView>
   );
 }
@@ -249,17 +256,31 @@ const styles = StyleSheet.create({
   textSize20: {
     fontSize: 20,
   },
+  textAlign: {
+    textAlign: "center",
+  },
 
   img: {
     width: 100,
     height: 100,
   },
 
-  avatar: {
-    width: 80,
-    height: 80,
-    borderRadius: 50,
+  avatarChange: {
+    // borderWidth: 3,
+    gap: 15,
+    marginTop: 15,
   },
+  avatar: {
+    width: 150,
+    height: 150,
+    borderRadius: 90,
+    borderWidth: 1,
+    padding: 5,
+  },
+  media: {
+    justifyContent: "space-evenly",
+  },
+
   allInput: {
     width: "100%",
     alignItems: "center",
@@ -279,9 +300,20 @@ const styles = StyleSheet.create({
   update: {
     borderWidth: 3,
     paddingVertical: 15,
-    paddingHorizontal: 60,
     borderRadius: 30,
     marginTop: 10,
     marginBottom: 20,
+    width: 220,
+    textAlign: "center",
+  },
+  logOut: {
+    borderWidth: 3,
+    paddingVertical: 15,
+    borderRadius: 30,
+    marginTop: 10,
+    marginBottom: 20,
+    width: 220,
+    textAlign: "center",
+    backgroundColor: "lightgray",
   },
 });
