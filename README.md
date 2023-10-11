@@ -29,31 +29,13 @@ This project was a front-end exercise for react native module and use an API fro
 
 <div align="center">
 
-<img	
-    width="230"
-		alt="Signup Screen"
-		src="assets/screens/Sign-Up.png" />
-<img
-		width="230"
-		alt="Signin Screen"
-		src="assets/screens/Sign-In.png" />
+<img width="230" height="500" alt="Signup Screen" src="assets/screens/Sign-Up.png" />
+<img width="230" height="500" alt="Signin Screen" src="assets/screens/Sign-In.png" />
 
-<img
-			width="230"
-		alt="Home Screen"
-		src="assets/screens/Home.png" />
-<img
-			width="230"
-		alt="Room Screen"
-		src="assets/screens/Room.png" />
-<img
-			width="230"
-		alt="AroundMe Screen"
-		src="assets/screens/AroundMe.png" />
-<img
-		width="230"
-		alt="Profile Screen"
-		src="assets/screens/Setting.png" />
+<img width="230" height="500" alt="Home Screen" src="assets/screens/Home.png" />
+<img width="230" height="500" alt="Room Screen" src="assets/screens/Room.png" />
+<img width="230" height="500" alt="AroundMe Screen" src="assets/screens/AroundMe.png" />
+<img width="230" height="500" alt="Profile Screen" src="assets/screens/Setting.png" />
 
 </div>
 
