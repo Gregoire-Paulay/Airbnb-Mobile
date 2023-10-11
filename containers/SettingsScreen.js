@@ -54,14 +54,20 @@ export default function SettingsScreen({ setToken, userToken }) {
           }
         );
         // console.log("AXIOS ===>", data);
-        setUserAvatar(data.photo.url);
+        if (data.photo) {
+          setUserAvatar(data.photo.url);
+        } else {
+          setUserAvatar(null);
+        }
+
+        console.log("PHOTO", data);
         setEmail(data.email);
         setUsername(data.username);
         setDescription(data.description);
 
         setLoadingFinished(true);
       } catch (error) {
-        console.log(error.response);
+        console.log("ERROR", error);
       }
     };
     fetchData();
@@ -124,7 +130,7 @@ export default function SettingsScreen({ setToken, userToken }) {
           },
         }
       );
-      console.log("UPDATE ==>", data);
+      // console.log("UPDATE ==>", data);
 
       if (selectedPic) {
         const tab = selectedPic.split(".");
@@ -148,9 +154,8 @@ export default function SettingsScreen({ setToken, userToken }) {
               },
             }
           );
-          console.log("AVATAR EDIT ===>", response.data);
+          // console.log("AVATAR EDIT ===>", response.data);
           setUserAvatar(response.data.photo.url);
-          // console.log("AVATAR EDIT ===>", userAvatar);
         } catch (error) {
           console.log(error.response);
         }
@@ -159,9 +164,6 @@ export default function SettingsScreen({ setToken, userToken }) {
       console.log(error.response);
     }
   };
-
-  // console.log(userId);
-  // console.log("AVATAR ===>", userAvatar);
 
   return !loadingFinished ? (
     <ActivityIndicator size="large" color="#EB5A62" />

@@ -8,10 +8,10 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
-  Platform,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { AntDesign } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function SignUpScreen({ setToken }) {
   const navigation = useNavigation();
@@ -43,12 +43,16 @@ export default function SignUpScreen({ setToken }) {
               password: password,
             }
           );
-          console.log(response.data);
+          // console.log(response.data);
           alert("Compte créer avec succès");
+          const userId = response.data.id;
+          console.log("ID SIGNUP", userId);
+          await AsyncStorage.setItem("id", userId);
+
           const userToken = response.data.token;
           setToken(userToken);
         } catch (error) {
-          console.log("ERROR SIGNUP ==>", error.response.data);
+          // console.log("ERROR SIGNUP ==>", error.response.data);
           if (error.response.data.error === "Missing parameter(s)") {
             setErrorMessage("Please fill all fields.");
           } else if (

@@ -35,17 +35,15 @@ export default function SignInScreen({ setToken }) {
             password: password,
           }
         );
-        console.log(response.data);
+        // console.log(response.data);
 
         const userToken = response.data.token;
-        // console.log(userToken);
         const userId = response.data.id;
-        // console.log(userId);
 
         await AsyncStorage.setItem("id", userId);
         setToken(userToken);
       } catch (error) {
-        console.log("ERROR ==>", error.response.data);
+        // console.log("ERROR ==>", error.response.data);
         if (error.response.data.error === "Missing parameter(s)") {
           setErrorMessage("Please fill all fields");
         } else if (
