@@ -13,9 +13,6 @@ AirBnB React native
 
 <br/>
 
-<p align="center">
-	<img src="assets/screens/Home.png" width="300">
-</p>
 
 ## Overview
 
