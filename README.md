@@ -16,7 +16,6 @@ AirBnB React native
 
 ## Overview
 
-👏 **Thank you for your stars, your issues and your pull requests. I really love open source community.** ❤️
 
 **Perfect to start an AirBnB Clone app.** 6 screens are availables : SignIn, signUp, Home, Room, AroundMe and Profile. You'll find some components like RateBar for the evaluation of a room . No frameworks UI like Bootstrap or Material UI are used.
 
