@@ -3,7 +3,7 @@ import axios from "axios";
 import * as Location from "expo-location";
 import MapView, { Marker } from "react-native-maps";
 
-import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import { View, StyleSheet, ActivityIndicator } from "react-native";
 {
 }
 const AroundMeScreen = ({ navigation }) => {

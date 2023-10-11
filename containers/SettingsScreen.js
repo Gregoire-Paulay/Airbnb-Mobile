@@ -6,7 +6,6 @@ import * as ImagePicker from "expo-image-picker";
 import { FontAwesome } from "@expo/vector-icons";
 
 import {
-  Button,
   Text,
   View,
   Image,
@@ -28,6 +27,7 @@ export default function SettingsScreen({ setToken, userToken }) {
   const [username, setUsername] = useState("");
   const [description, setDescription] = useState("");
   const [selectedPic, setSelectedPic] = useState("");
+  const [avatarMessage, setAvatarMessage] = useState("");
 
   // State pour gérer les loading des useEffect
   const [IsLoading, setIsLoading] = useState(true);
@@ -53,14 +53,13 @@ export default function SettingsScreen({ setToken, userToken }) {
             },
           }
         );
-        // console.log("AXIOS ===>", data);
+        // console.log("AXIOS ===>", data.photo);
         if (data.photo) {
           setUserAvatar(data.photo.url);
         } else {
           setUserAvatar(null);
         }
 
-        console.log("PHOTO", data);
         setEmail(data.email);
         setUsername(data.username);
         setDescription(data.description);
@@ -131,6 +130,7 @@ export default function SettingsScreen({ setToken, userToken }) {
         }
       );
       // console.log("UPDATE ==>", data);
+      setAvatarMessage("Loading new profile picture");
 
       if (selectedPic) {
         const tab = selectedPic.split(".");
@@ -156,6 +156,7 @@ export default function SettingsScreen({ setToken, userToken }) {
           );
           // console.log("AVATAR EDIT ===>", response.data);
           setUserAvatar(response.data.photo.url);
+          setAvatarMessage("");
         } catch (error) {
           console.log(error.response);
         }
@@ -188,7 +189,7 @@ export default function SettingsScreen({ setToken, userToken }) {
           </TouchableOpacity>
         </View>
       </View>
-
+      <Text style={styles.avatarMessage}>{avatarMessage}</Text>
       <View style={styles.allInput}>
         <TextInput
           value={email}
@@ -215,7 +216,7 @@ export default function SettingsScreen({ setToken, userToken }) {
         />
       </View>
 
-      <TouchableOpacity onPress={editInfo}>
+      <TouchableOpacity onPress={() => editInfo()}>
         <Text
           style={[
             styles.update,
@@ -281,6 +282,12 @@ const styles = StyleSheet.create({
   },
   media: {
     justifyContent: "space-evenly",
+  },
+
+  avatarMessage: {
+    fontSize: 18,
+    color: "red",
+    marginTop: 10,
   },
 
   allInput: {
